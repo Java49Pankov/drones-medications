@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import telran.drones.dto.*;
 import telran.drones.exceptions.DroneAlreadyExistException;
 import telran.drones.service.DronesService;
+import telran.exceptions.GlobalExceptionsHandler;
 
 import static telran.drones.api.ConstraintConstants.*;
 import static telran.drones.api.ServiceExceptionMessages.*;
@@ -35,13 +36,11 @@ class DronesControllerTest {
 	DroneDto droneDtoWrongFields = new DroneDto(new String(new char[10000]), ModelType.Middleweight, 600, (byte) 101,
 			State.IDLE);
 	DroneDto droneDtoMissingFields = new DroneDto(null, null, null, null, null);
-	String[] errorMessagesWrongFields = { DRONE_NUMBER_WRONG_LENGTH, MAX_PERCENTAGE_VIOLATION, MAX_WEIGHT_VIOLATION,
-
-	};
+	
+	String[] errorMessagesWrongFields = { DRONE_NUMBER_WRONG_LENGTH, MAX_PERCENTAGE_VIOLATION, MAX_WEIGHT_VIOLATION, };
 	String[] errorMessagesMissingFields = { MISSING_BATTERY_CAPACITY, MISSING_DRONE_NUMBER, MISSING_MODEL,
-			MISSING_STATE, MISSING_WEIGHT_LIMIT,
+			MISSING_STATE, MISSING_WEIGHT_LIMIT, };
 
-	};
 	@Autowired
 	MockMvc mockMvc;
 	@MockBean
@@ -50,50 +49,72 @@ class DronesControllerTest {
 	ObjectMapper mapper;
 
 	@Test
-	@DisplayName(REGISTER_DRONE_NORMAL)
+	@DisplayName("Controller: " + REGISTER_DRONE_NORMAL)
 	void testDroneRegisterNormal() throws Exception {
-		when(dronesService.registerDrone(droneDto)).thenReturn(droneDto);
+		when(dronesService.registerDrone(droneDto))
+				.thenReturn(droneDto);
+		
 		String droneJSON = mapper.writeValueAsString(droneDto);
-		String response = mockMvc.perform(post(HOST + DRONES).contentType(MediaType.APPLICATION_JSON)
-				.content(droneJSON)).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String response = mockMvc.perform(post(HOST + DRONES)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(droneJSON))
+				.andExpect(status().isOk())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 		assertEquals(droneJSON, response);
 
 	}
 
 	@Test
-	@DisplayName(REGISTER_DRONE_MISSING_FIELDS)
+	@DisplayName("Controller: " + REGISTER_DRONE_MISSING_FIELDS)
 	void testDronRegisterMissingFields() throws Exception {
 		String droneJSON = mapper.writeValueAsString(droneDtoMissingFields);
 		String response = mockMvc
-				.perform(post(HOST + DRONES).contentType(MediaType.APPLICATION_JSON).content(droneJSON))
-				.andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+				.perform(post(HOST + DRONES)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(droneJSON))
+				.andExpect(status().isBadRequest())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 		assertErrorMessages(response, errorMessagesMissingFields);
 	}
 
-	private void assertErrorMessages(String response, String[] errorMessages) {
-		String[] actualMessages = response.split(";");
+	private void assertErrorMessages(String response, String[] expectedMessages) {
+		String[] actualMessages = response.split(GlobalExceptionsHandler.ERROR_MESSAGES_DELIMITER);
 		Arrays.sort(actualMessages);
-		Arrays.sort(errorMessages);
-		assertArrayEquals(errorMessages, actualMessages);
+		Arrays.sort(expectedMessages);
+		assertArrayEquals(expectedMessages, actualMessages);
 	}
 
 	@Test
-	@DisplayName(REGISTER_DRONE_VALIDATION_VIOLATION)
+	@DisplayName("Controller: " + REGISTER_DRONE_VALIDATION_VIOLATION)
 	void testDronRegisterWrongFields() throws Exception {
 		String droneJSON = mapper.writeValueAsString(droneDtoWrongFields);
 		String response = mockMvc
-				.perform(post(HOST + DRONES).contentType(MediaType.APPLICATION_JSON).content(droneJSON))
-				.andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+				.perform(post(HOST + DRONES)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(droneJSON))
+				.andExpect(status().isBadRequest())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 		assertErrorMessages(response, errorMessagesWrongFields);
 	}
 
 	@Test
-	@DisplayName(REGISTER_DRONE_ALREADY_EXISTS)
+	@DisplayName("Controller: " + REGISTER_DRONE_ALREADY_EXISTS)
 	void testDroneRegisterAlreadyExists() throws Exception {
 		when(dronesService.registerDrone(droneDto)).thenThrow(new DroneAlreadyExistException());
 		String droneJSON = mapper.writeValueAsString(droneDto);
-		String response = mockMvc.perform(post(HOST + DRONES).contentType(MediaType.APPLICATION_JSON)
-				.content(droneJSON)).andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+		String response = mockMvc.perform(post(HOST + DRONES)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(droneJSON))
+				.andExpect(status().isBadRequest())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
 		assertEquals(DRONE_ALREADY_EXISTS, response);
 
 	}
