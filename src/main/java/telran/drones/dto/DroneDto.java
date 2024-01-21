@@ -19,11 +19,11 @@ public class DroneDto {
 	@NotNull(message = MISSING_WEIGHT_LIMIT)
 	@Positive
 	@Max(value = MAX_WEIGHT, message = MAX_WEIGHT_VIOLATION)
-	int weightLimit; // grams
+	Integer weightLimit; // grams
 	@Positive
 	@Max(value = 100, message = MAX_PERCENTAGE_VIOLATION)
 	@NotNull(message = MISSING_BATTERY_CAPACITY)
-	byte batteryCapacity; // percentage
+	Byte batteryCapacity; // percentage
 	@NotNull(message = MISSING_STATE)
 	State state;
 

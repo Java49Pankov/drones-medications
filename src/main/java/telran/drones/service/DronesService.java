@@ -1,4 +1,4 @@
-package telran.service;
+package telran.drones.service;
 
 import java.util.List;
 
