@@ -12,15 +12,14 @@ public class Drone {
 	@Column(length = 100)
 	String number;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false,updatable = false)
+	@Column(nullable = false, updatable = false)
 	ModelType model;
-	@Column(nullable = false,updatable = false, name="weight_limit")
+	@Column(nullable = false, updatable = false, name = "weight_limit")
 	int weightLimit;
-	@Column(nullable = false,updatable = true, name="battery_capacity")
+	@Column(nullable = false, updatable = true, name = "battery_capacity")
 	byte batteryCapacity;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false,updatable = true)
+	@Column(nullable = false, updatable = true)
 	State state;
-	
-	
+
 }

@@ -1,7 +1,9 @@
 package telran.drones.entities;
+
 import jakarta.persistence.*;
+
 @Entity
-@Table(name="medications")
+@Table(name = "medications")
 public class Medication {
 	@Id
 	String code;

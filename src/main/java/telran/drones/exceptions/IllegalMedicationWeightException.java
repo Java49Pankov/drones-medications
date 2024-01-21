@@ -7,7 +7,7 @@ public class IllegalMedicationWeightException extends IllegalStateException {
 
 	public IllegalMedicationWeightException() {
 		super(ServiceExceptionMessages.WEIGHT_LIMIT_VIOLATION);
-		
+
 	}
 
 }

@@ -7,7 +7,7 @@ public class IllegalDroneStateException extends IllegalStateException {
 
 	public IllegalDroneStateException() {
 		super(ServiceExceptionMessages.NOT_IDLE_STATE);
-		
+
 	}
 
 }

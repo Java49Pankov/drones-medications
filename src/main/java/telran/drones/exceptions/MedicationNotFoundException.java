@@ -8,7 +8,7 @@ public class MedicationNotFoundException extends NotFoundException {
 
 	public MedicationNotFoundException() {
 		super(ServiceExceptionMessages.MEDICATION_NOT_FOUND);
-		
+
 	}
 
 }
