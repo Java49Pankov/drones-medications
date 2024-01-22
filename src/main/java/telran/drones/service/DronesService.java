@@ -11,4 +11,12 @@ public interface DronesService {
 
 	List<MedicationDto> checkMedicationItems(String droneNumber);
 
+	List<DroneDto> checkAvailableDrones();
+
+	int checkBatteryLevel(String droneNumber);
+
+	List<LogDto> checkLogs(String droneNumber);
+
+	List<DroneMedicationsAmount> checkDronesMedicationItemsAmounts();
+
 }
