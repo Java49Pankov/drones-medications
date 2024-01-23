@@ -1,8 +1,7 @@
 package telran.drones.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import telran.drones.api.PropertiesNames;
 import telran.drones.dto.*;
 import telran.drones.entities.*;
-import telran.drones.exceptions.DroneAlreadyExistException;
-import telran.drones.exceptions.DroneNotFoundException;
-import telran.drones.exceptions.IllegalDroneStateException;
-import telran.drones.exceptions.IllegalMedicationWeightException;
-import telran.drones.exceptions.LowBatteryCapacityException;
-import telran.drones.exceptions.MedicationNotFoundException;
+import telran.drones.exceptions.*;
+
 import telran.drones.repo.*;
 
 @Service
@@ -66,7 +61,6 @@ public class DronesServiceImpl implements DronesService {
 		if (drone.getState() != State.IDLE) {
 			throw new IllegalDroneStateException();
 		}
-
 		if (drone.getBatteryCapacity() < capacityThreshold) {
 			throw new LowBatteryCapacityException();
 		}
@@ -106,7 +100,6 @@ public class DronesServiceImpl implements DronesService {
 	@Override
 	public int checkBatteryLevel(String droneNumber) {
 		log.debug("received drone number: {}", droneNumber);
-
 		Drone drone = droneRepo.findById(droneNumber).orElseThrow(() -> new DroneNotFoundException());
 		return drone.getBatteryCapacity();
 	}
@@ -122,7 +115,6 @@ public class DronesServiceImpl implements DronesService {
 
 	@Override
 	public List<DroneMedicationsAmount> checkDronesMedicationItemsAmounts() {
-
 		return logRepo.findDronesAmounts();
 	}
 
@@ -150,9 +142,7 @@ public class DronesServiceImpl implements DronesService {
 			drone.setBatteryCapacity((byte) (batteryCapacity + capacityDelta));
 			createNewLog(drone);
 		}
-
 		batteryCapacity = drone.getBatteryCapacity();
-
 		log.trace("after processing - drone: {}, battery capacity: {}, state: {}", droneNumber, batteryCapacity, state);
 		droneRepo.flush();
 
