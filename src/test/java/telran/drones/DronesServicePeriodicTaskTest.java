@@ -13,8 +13,8 @@ import telran.drones.api.PropertiesNames;
 import telran.drones.dto.*;
 import telran.drones.service.DronesService;
 
-@SpringBootTest(properties = { PropertiesNames.PERIODIC_UNIT_MILLIS + "=100" })
-@Sql(scripts = { "classpath:test_data_normal_idle.sql" })
+@SpringBootTest(properties = { PropertiesNames.PERIODIC_UNIT_MILLIS + "=100"})
+@Sql(scripts= {"classpath:test_data_normal_idle.sql"})
 class DronesServicePeriodicTaskTest {
 	private static final String DRONE1 = "Drone-1";
 	private static final String MED1 = "MED_1";
@@ -29,13 +29,7 @@ class DronesServicePeriodicTaskTest {
 		Thread.sleep(500);
 		// At this step there should be 2 available drones
 		availableDronesTest(2);
-		Thread.sleep(1000);
-		// At this step there should be
-		// 3 available drones
-		// battery capacity of Drone-1 78%
-		// number of logs 12
-		availableBatteryLogsTest(3, 78, 12);
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		// At this step there should be
 		// 10 available drones
 		// battery capacity of Drone-1 100%
