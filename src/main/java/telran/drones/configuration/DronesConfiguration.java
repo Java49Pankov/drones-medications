@@ -4,7 +4,8 @@ import java.util.*;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import telran.drones.dto.*;
 
@@ -21,17 +22,18 @@ public class DronesConfiguration {
 
 	@Bean
 	Map<State, State> getMovesMap() {
-		Map<State, State> result = new HashMap<>();
-		result.put(State.LOADING, State.LOADED);
-		result.put(State.LOADED, State.DELIVERING);
-		result.put(State.DELIVERING, State.DELIVERING1);
-		result.put(State.DELIVERING1, State.DELIVERING2);
-		result.put(State.DELIVERING2, State.DELIVERING3);
-		result.put(State.DELIVERING3, State.RETURNING);
-		result.put(State.RETURNING, State.RETURNING1);
-		result.put(State.RETURNING1, State.RETURNING2);
-		result.put(State.RETURNING2, State.RETURNING3);
-		result.put(State.RETURNING3, State.IDLE);
-		return result;
+		Map<State, State> res = new HashMap<>();
+		res.put(State.LOADING, State.LOADED);
+		res.put(State.LOADED, State.DELIVERING);
+		res.put(State.DELIVERING, State.DELIVERING1);
+		res.put(State.DELIVERING1, State.DELIVERING2);
+		res.put(State.DELIVERING2, State.DELIVERING3);
+		res.put(State.DELIVERING3, State.DELIVERED);
+		res.put(State.DELIVERED, State.RETURNING);
+		res.put(State.RETURNING, State.RETURNING1);
+		res.put(State.RETURNING1, State.RETURNING2);
+		res.put(State.RETURNING2, State.RETURNING3);
+		res.put(State.RETURNING3, State.IDLE);
+		return res;
 	}
 }
