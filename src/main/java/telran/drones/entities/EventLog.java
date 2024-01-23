@@ -32,6 +32,7 @@ public class EventLog {
 	@NonNull
 	LocalDateTime timestamp;
 	
+	@Enumerated(EnumType.STRING)
 	@NonNull
 	State state;
 	
