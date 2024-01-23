@@ -14,7 +14,7 @@ import telran.drones.dto.*;
 import telran.drones.service.DronesService;
 
 @SpringBootTest(properties = { PropertiesNames.PERIODIC_UNIT_MILLIS + "=100" })
-@Sql(scripts = { "test_data_normal_idle.sql" })
+@Sql(scripts = { "classpath:test_data_normal_idle.sql" })
 class DronesServicePeriodicTaskTest {
 	private static final String DRONE1 = "Drone-1";
 	private static final String MED1 = "MED_1";
